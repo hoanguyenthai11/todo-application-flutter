@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../models/tasks_data.dart';
+import '../provider/tasks_data.dart';
 import '../screens/add_task_page.dart';
 import '../styles/constant.dart';
 import '../models/tasks.dart';
@@ -83,10 +83,10 @@ class _HomePageState extends State<HomePage> {
                               padding: EdgeInsets.only(
                                   bottom:
                                       MediaQuery.of(context).viewInsets.bottom),
-                              child: Container(
+                              child: SizedBox(
                                 height: task.isCompleted
                                     ? MediaQuery.of(context).size.height * 0.20
-                                    : MediaQuery.of(context).size.height * 0.30,
+                                    : MediaQuery.of(context).size.height * 0.3,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => AddTaskPage(),
+                    builder: (_) => const AddTaskPage(),
                   ),
                 );
               })
@@ -223,7 +223,7 @@ class ButtonCustom extends StatelessWidget {
   final Color? txtColor;
   final Function()? onTap;
 
-  ButtonCustom({this.title, this.txtColor, this.bgColor, this.onTap});
+  const ButtonCustom({this.title, this.txtColor, this.bgColor, this.onTap});
 
   @override
   Widget build(BuildContext context) {

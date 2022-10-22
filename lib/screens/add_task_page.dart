@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/models/tasks_data.dart';
 import 'package:todo_app/styles/constant.dart';
 import 'package:todo_app/styles/text_style.dart';
 import 'package:todo_app/widgets/input_form.dart';
 import 'package:todo_app/widgets/my_buttons.dart';
+
+import '../provider/tasks_data.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -21,14 +22,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   String _endTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
   String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
   int _selectedColor = 0;
-  bool _isCompleted = false;
+  final bool _isCompleted = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
-        title: Text('Add Task'),
+        title: const Text('Add Task'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -49,7 +50,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               InputForm(
                 title: 'Date',
-                hint: '${DateFormat.yMd().format(_selectedDate)}',
+                hint: DateFormat.yMd().format(_selectedDate),
                 widget: IconButton(
                   icon: const Icon(
                     Icons.calendar_today_outlined,
@@ -178,6 +179,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           _startTime,
           _endTime,
           _selectedColor);
+
       Navigator.of(context).pop();
     } else if (_titleController.text.isEmpty || _noteController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -186,38 +188,38 @@ class _AddTaskPageState extends State<AddTaskPage> {
             'Required',
             style: TextStyle(color: Theme.of(context).errorColor),
           ),
-          duration: Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 1000),
         ),
       );
     }
   }
 
   void _getDateFromUser() async {
-    DateTime? _pickerDate = await showDatePicker(
+    DateTime? pickerDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
     );
-    if (_pickerDate != null) {
+    if (pickerDate != null) {
       setState(() {
-        _selectedDate = _pickerDate;
+        _selectedDate = pickerDate;
       });
     }
   }
 
   void _getTimeFromUser(bool isStartTime) async {
     var pickedTime = await _showTimePicker();
-    String _formatedTime = pickedTime.format(context);
+    String formatedTime = pickedTime?.format(context) ?? '';
     if (pickedTime == null) {
       print('');
     } else if (isStartTime == true) {
       setState(() {
-        _startTime = _formatedTime;
+        _startTime = formatedTime;
       });
     } else if (isStartTime == false) {
       setState(() {
-        _endTime = _formatedTime;
+        _endTime = formatedTime;
       });
     }
   }
